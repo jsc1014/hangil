@@ -10,13 +10,13 @@ import com.ssafy.hangil.storage.model.service.IStorageService;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @RestController
 @CrossOrigin("*")
 @RequestMapping("storage")
 public class StorageController {
 
-	private final IStorageService storageService;
+//	private final IStorageService storageService;
 
 	// 사용자 별 저장된 게시글 보관함
 	@PostMapping

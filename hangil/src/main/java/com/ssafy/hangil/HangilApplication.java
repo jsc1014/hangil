@@ -9,5 +9,5 @@ public class HangilApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HangilApplication.class, args);
 	}
-
+	
 }

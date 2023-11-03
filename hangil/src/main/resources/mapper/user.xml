@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ssafy.hangil.user.model.mapper.IUserMapper">
+
+	<resultMap type="userDTO" id="userMap">
+		<result column="user_id" property="userId" />
+		<result column="user_pw" property="userPw" />
+		<result column="user_name" property="userName" />
+		<result column="user_nickname" property="userNickname" />
+		<result column="profile_picture" property="profilePicture" />
+	</resultMap>
+
+	<select id="loginUser" parameterType="UserDTO"
+		resultMap="userMap">
+		select user_id, user_pw
+		from user
+		where user_id = #{userId}
+	</select>
+
+
+	<insert id="registUser" parameterType="userDTO">
+		insert into
+		user(
+		user_id, user_pw, user_name, user_nickname, profile_picture
+		) values (
+		#{userId}, #{userPw}, #{userName}, #{userNickname}, #{profilePicture}
+		)
+	</insert>
+
+	<delete id="delelteUser" parameterType="string">
+		delete from user
+		where
+		user_id = #{userId}
+	</delete>
+
+	<update id="updateUser" parameterType="userDTO">
+		update user
+		set user_pw = #{userPw},
+		user_name = #{userName},
+		user_nickname = #{userNickname},
+		profile_picture = #{profilePicture}
+		where user_id = #{userId}
+	</update>
+</mapper>

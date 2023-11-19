@@ -10,4 +10,12 @@ public interface IUserService {
 	void deleteUser(String userId);
 	
 	void updateUser(UserDTO userDTO);
+
+	void saveRefreshToken(String userId, String refreshToken);
+
+	Object getRefreshToken(String userId) throws Exception;
+	
+	void deleRefreshToken(String userId);
+
+	UserDTO userInfo(String userId);
 }

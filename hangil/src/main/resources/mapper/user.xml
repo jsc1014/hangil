@@ -11,20 +11,51 @@
 		<result column="user_name" property="userName" />
 		<result column="user_nickname" property="userNickname" />
 		<result column="profile_picture" property="profilePicture" />
+		<result column="token" property="token" />
 	</resultMap>
 
 	<select id="loginUser" parameterType="UserDTO"
 		resultMap="userMap">
-		select user_id, user_pw
+		select user_id, user_pw, token
+		from user
+		where user_id =
+		#{userId} and user_pw = #{userPw}
+	</select>
+
+	<select id="userInfo" parameterType="string" resultMap="UserDTO">
+		select
+		user_name, user_id, user_nickname, profile_picture
 		from user
 		where user_id = #{userId}
 	</select>
 
+	<update id="saveRefreshToken" parameterType="map">
+		update user
+		set
+		token
+		= #{token}
+		where user_id = #{userId}
+	</update>
+
+	<select id="getRefreshToken" parameterType="string"
+		resultType="string">
+		select token
+		from user
+		where user_id = #{userId}
+	</select>
+
+	<update id="deleteRefreshToken" parameterType="map">
+		update user
+		set
+		token = #{token, jdbcType=VARCHAR}
+		where user_id = #{userId}
+	</update>
 
 	<insert id="registUser" parameterType="userDTO">
 		insert into
 		user(
-		user_id, user_pw, user_name, user_nickname, profile_picture
+		user_id,
+		user_pw, user_name, user_nickname, profile_picture
 		) values (
 		#{userId}, #{userPw}, #{userName}, #{userNickname}, #{profilePicture}
 		)
@@ -38,7 +69,8 @@
 
 	<update id="updateUser" parameterType="userDTO">
 		update user
-		set user_pw = #{userPw},
+		set user_pw =
+		#{userPw},
 		user_name = #{userName},
 		user_nickname = #{userNickname},
 		profile_picture = #{profilePicture}

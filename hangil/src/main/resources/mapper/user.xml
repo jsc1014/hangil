@@ -11,18 +11,17 @@
 		<result column="user_name" property="userName" />
 		<result column="user_nickname" property="userNickname" />
 		<result column="profile_picture" property="profilePicture" />
-		<result column="token" property="token" />
+		<result column="user_token" property="userToken" />
 	</resultMap>
 
-	<select id="loginUser" parameterType="UserDTO"
+	<select id="loginUser" parameterType="userDTO"
 		resultMap="userMap">
-		select user_id, user_pw, token
+		select user_id, user_pw, user_token
 		from user
-		where user_id =
-		#{userId} and user_pw = #{userPw}
+		where user_id = #{userId} and user_pw = #{userPw}
 	</select>
 
-	<select id="userInfo" parameterType="string" resultMap="UserDTO">
+	<select id="userInfo" parameterType="string" resultMap="userMap">
 		select
 		user_name, user_id, user_nickname, profile_picture
 		from user
@@ -32,14 +31,14 @@
 	<update id="saveRefreshToken" parameterType="map">
 		update user
 		set
-		token
-		= #{token}
+		user_token
+		= #{userToken}
 		where user_id = #{userId}
 	</update>
 
 	<select id="getRefreshToken" parameterType="string"
 		resultType="string">
-		select token
+		select user_token
 		from user
 		where user_id = #{userId}
 	</select>
@@ -47,7 +46,7 @@
 	<update id="deleteRefreshToken" parameterType="map">
 		update user
 		set
-		token = #{token, jdbcType=VARCHAR}
+		user_token = #{userToken, jdbcType=VARCHAR}
 		where user_id = #{userId}
 	</update>
 

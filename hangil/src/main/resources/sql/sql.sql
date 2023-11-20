@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `hangil`.`user` (
     `user_name` VARCHAR(45) NOT NULL,
     `user_nickname` VARCHAR(45) NOT NULL,
     `profile_picture` VARCHAR(255) DEFAULT 'QmRuPFZMo63vKqtYE7sz7zS3MCbYRKn262uJp6zeJ3irKH',
-    `token` varchar(1000) null default null,
+    `user_token` varchar(1000) null default null,
     PRIMARY KEY (`user_id`)
 );
 

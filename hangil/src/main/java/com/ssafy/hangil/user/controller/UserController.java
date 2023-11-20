@@ -70,7 +70,6 @@ public class UserController {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		System.out.println(resultMap);
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
@@ -78,15 +77,13 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> getInfo(
 			@PathVariable("userId") String userId,
 			HttpServletRequest request) {
-		System.out.println(userId);
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		if (jwtUtil.checkToken(request.getHeader("Authorization"))) {
-
 			try {
 //				로그인 사용자 정보.
-				UserDTO memberDto = iUserService.userInfo(userId);
-				resultMap.put("userInfo", memberDto);
+				UserDTO userDto = iUserService.userInfo(userId);
+				resultMap.put("userInfo", userDto);
 				status = HttpStatus.OK;
 			} catch (Exception e) {
 				resultMap.put("message", e.getMessage());
@@ -95,6 +92,7 @@ public class UserController {
 		} else {
 			status = HttpStatus.UNAUTHORIZED;
 		}
+
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	

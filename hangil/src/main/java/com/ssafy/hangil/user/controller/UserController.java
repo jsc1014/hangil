@@ -17,13 +17,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.hangil.api.service.IPinataService;
 import com.ssafy.hangil.user.model.UserDTO;
 import com.ssafy.hangil.user.model.service.IUserService;
 import com.ssafy.hangil.util.JWTUtil;
 
+import lombok.RequiredArgsConstructor;
+
 // 어떤 서버를 쓸지(주소)
 @CrossOrigin("*")
-
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -37,9 +39,11 @@ public class UserController {
 	}
 
 	@PostMapping()
-	public ResponseEntity<String> registUser(@RequestBody UserDTO userDTO) {
+	public ResponseEntity<Map<String, Object>> registUser(@RequestBody UserDTO userDTO) {
+
 		iUserService.registUser(userDTO);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		return new ResponseEntity<Map<String, Object>>(status);
 	}
 
 	@PostMapping("login")
@@ -74,8 +78,7 @@ public class UserController {
 	}
 
 	@GetMapping("/info/{userId}")
-	public ResponseEntity<Map<String, Object>> getInfo(
-			@PathVariable("userId") String userId,
+	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("userId") String userId,
 			HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
@@ -95,7 +98,7 @@ public class UserController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@GetMapping("/logout/{userId}")
 	public ResponseEntity<?> removeToken(@PathVariable("userId") String userId) {
 		System.out.println(userId);

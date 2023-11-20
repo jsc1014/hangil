@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.hangil.api.service.IPinataService;
 import com.ssafy.hangil.user.model.UserDTO;
 import com.ssafy.hangil.user.model.service.IUserService;
 import com.ssafy.hangil.util.JWTUtil;
@@ -139,9 +138,10 @@ public class UserController {
 		return ResponseEntity.ok("ok");
 	}
 
-	@PutMapping("{id}")
-	public ResponseEntity<String> updateBoard(@PathVariable String id, @RequestBody UserDTO userDTO) {
-		userDTO.setUserId(id);
+	@PutMapping("{userId}")
+	public ResponseEntity<String> updateBoard(@PathVariable String userId, @RequestBody UserDTO userDTO) {
+		userDTO.setUserId(userId);
+		System.out.println(userDTO);
 		iUserService.updateUser(userDTO);
 		System.out.println(userDTO);
 		return ResponseEntity.ok("OK");

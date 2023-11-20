@@ -41,7 +41,7 @@ public class UserServiceImpl implements IUserService {
 	public void saveRefreshToken(String userId, String refreshToken) {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("userId", userId);
-		map.put("token", refreshToken);
+		map.put("userToken", refreshToken);
 		iUserMapper.saveRefreshToken(map);
 	}
 	

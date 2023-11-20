@@ -1,6 +1,7 @@
 package com.ssafy.hangil.api.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -25,12 +26,11 @@ public class ApiController {
 	private final IPinataService pinataService;
 
 	@PostMapping("/pinata/upload")
-	public ResponseEntity<Map<String, Object>> uploadImage(@RequestParam("image") MultipartFile imageFile) {
-		System.out.println(imageFile);
+	public ResponseEntity<Map<String, Object>> uploadImage(@RequestParam("imageFile") MultipartFile[] imageFiles) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
-			String cid = pinataService.uploadToPinata(imageFile);
+			List<String> cid = pinataService.uploadToPinata(imageFiles);
 			resultMap.put("CID", cid);
 			status = HttpStatus.CREATED;
 		} catch (Exception e) {

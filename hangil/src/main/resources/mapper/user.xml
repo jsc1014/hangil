@@ -71,11 +71,8 @@
 
 	<update id="updateUser" parameterType="userDTO">
 		update user
-		set user_pw =
-		#{userPw},
-		user_name = #{userName},
-		user_nickname = #{userNickname},
-		profile_picture = #{profilePicture}
+		set user_pw = #{userPw},
+		user_nickname = #{userNickname}
 		where user_id = #{userId}
 	</update>
 </mapper>

@@ -8,6 +8,8 @@ public interface IBoardService {
 
 	void boardWrite(BoardDTO boardDTO);
 
+	int getBoardNo(BoardDTO boardDTO);
+	
 	List<BoardDTO> boardList();
 
 	BoardDTO boardDetail(int boardNo);
@@ -16,4 +18,7 @@ public interface IBoardService {
 
 	List<BoardDTO> userBoardList(String userId);
 
+	List<String> getBoardImgById(int boardNo);
+
+	void setBoardFile(BoardDTO boardDTO, int boardNo);
 }

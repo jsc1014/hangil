@@ -29,6 +29,7 @@ CREATE TABLE `hangil`.`board` (
   `board_title` VARCHAR(45) NOT NULL,
   `board_content` VARCHAR(2000) NOT NULL,
   `board_like` INT NULL DEFAULT 0,
+  `board_place` VARCHAR(300) NOT NULL,
   `board_latitude` DOUBLE NULL DEFAULT 0.0,
   `board_longitude` DOUBLE NULL DEFAULT 0.0,
   `board_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

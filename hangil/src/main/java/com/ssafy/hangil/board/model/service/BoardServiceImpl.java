@@ -21,6 +21,20 @@ public class BoardServiceImpl implements IBoardService {
 	}
 
 	@Override
+	public int getBoardNo(BoardDTO boardDTO) {
+		return boardMapper.getBoardNo(boardDTO);
+	}
+
+	@Override
+	public void setBoardFile(BoardDTO boardDTO, int boardNo) {
+		List<String> fileCids = boardDTO.getBoardFileCID();
+		for(String fileCid : fileCids) {
+			System.out.println(fileCid);
+			boardMapper.setBoardFile(boardNo, fileCid);
+		}
+	}
+
+	@Override
 	public List<BoardDTO> boardList() {
 		return boardMapper.boardList();
 	}
@@ -38,5 +52,10 @@ public class BoardServiceImpl implements IBoardService {
 	@Override
 	public List<BoardDTO> userBoardList(String userId) {
 		return boardMapper.userBoardList(userId);
+	}
+
+	@Override
+	public List<String> getBoardImgById(int boardNo) {
+		return boardMapper.getBoardImgById(boardNo);
 	}
 }

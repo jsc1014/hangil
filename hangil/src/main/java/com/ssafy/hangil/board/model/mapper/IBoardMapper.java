@@ -19,4 +19,9 @@ public interface IBoardMapper {
 
 	List<BoardDTO> userBoardList(String userId);
 
+	int getBoardNo(BoardDTO boardDTO);
+
+	List<String> getBoardImgById(int boardNo);
+
+	void setBoardFile(int boardNo, String fileCid);
 }

@@ -11,6 +11,7 @@
 		<result column="board_title" property="boardTitle" />
 		<result column="board_content" property="boardContent" />
 		<result column="board_like" property="boardLike" />
+		<result column="board_place" property="boardPlace" />
 		<result column="board_latitude" property="boardLatitude" />
 		<result column="board_longitude" property="boardLongitude" />
 		<result column="board_date" property="boardDate" />
@@ -18,71 +19,101 @@
 
 	<insert id="boardWrite" parameterType="boardDTO">
 		INSERT into board (
-			user_id,
-			board_title,
-			board_content,
-			board_latitude,
-			board_longitude
+		user_id,
+		board_title,
+		board_content,
+		board_place,
+		board_latitude,
+		board_longitude
 		)
 		VALUES (
-			#{userId},
-			#{boardTitle},
-			#{boardContent},
-			#{boardLatitude},
-			#{boardLongitude}
+		#{userId},
+		#{boardTitle},
+		#{boardContent},
+		#{boardPlace},
+		#{boardLatitude},
+		#{boardLongitude}
 		)
 	</insert>
 
+	<select id="getBoardNo" parameterType="boardDTO"
+		resultType="int">
+		select board_no
+		from board
+		where user_id = #{userId} and
+		board_title = #{boardTitle} and board_content =
+		#{boardContent} and
+		board_place = #{boardPlace} and board_latitude = #{boardLatitude}
+		and
+		board_longitude = #{boardLongitude}
+	</select>
+
+	<insert id="setBoardFile" parameterType="hashMap">
+		insert into board_file
+		(board_no, board_file_url) values(#{boardNo}, #{fileCid})
+	</insert>
+
+	<select id="getBoardImgById" parameterType="int"
+		resultType="String">
+		SELECT
+		board_file_url
+		FROM
+		board_file
+		WHERE
+		board_no =
+		#{boardNo}
+	</select>
+
 	<select id="boardList" resultMap="boardMap">
 		SELECT
-			board_no,
-			user_id,
-			board_title,
-			board_content,
-			board_like,
-			board_latitude,
-			board_longitude,
-			board_date
+		board_no,
+		user_id,
+		board_title,
+		board_content,
+		board_like,
+		board_latitude,
+		board_longitude,
+		board_date
 		FROM
-			board
+		board
 	</select>
 
 	<select id="boardDetail" parameterType="int"
 		resultMap="boardMap">
 		SELECT
-			board_no,
-			user_id,
-			board_title,
-			board_content,
-			board_like,
-			board_latitude,
-			board_longitude,
-			board_date
+		board_no,
+		user_id,
+		board_title,
+		board_content,
+		board_like,
+		board_latitude,
+		board_longitude,
+		board_date
 		FROM
-			board
+		board
 		WHERE
-			board_no = #{boardNo}
+		board_no = #{boardNo}
 	</select>
 
 	<delete id="boardDelete" parameterType="int">
 		DELETE FROM board
 		WHERE
-			board_no = #{boardNo}
+		board_no = #{boardNo}
 	</delete>
-	
+
 	<select id="userBoardList" resultMap="boardMap">
 		SELECT
-			board_no,
-			user_id,
-			board_title,
-			board_content,
-			board_like,
-			board_latitude,
-			board_longitude,
-			board_date
+		board_no,
+		user_id,
+		board_title,
+		board_content,
+		board_like,
+		board_latitude,
+		board_longitude,
+		board_date
 		FROM
-			board
+		board
 		WHERE
-			user_id = #{userId}
+		user_id = #{userId}
 	</select>
 </mapper>

@@ -30,6 +30,7 @@ public class PinataServiceImpl implements IPinataService {
     private String pinataSecretApiKey;
 
     public List<String> uploadToPinata(MultipartFile[] imageFiles) throws IOException {
+
         List<String> cids = new ArrayList<>();
 
         for (MultipartFile imageFile : imageFiles) {

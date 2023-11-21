@@ -139,20 +139,20 @@ public class UserController {
 	}
 
 	@PutMapping("{userId}")
-	public ResponseEntity<String> updateBoard(@PathVariable String userId, @RequestBody UserDTO userDTO) {
+	public ResponseEntity<Map<String, Object>> updateUserInfo(@PathVariable String userId, @RequestBody UserDTO userDTO) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
 		userDTO.setUserId(userId);
-		System.out.println(userDTO);
-		iUserService.updateUser(userDTO);
-		System.out.println(userDTO);
-		return ResponseEntity.ok("OK");
+		try {
+			iUserService.updateUser(userDTO);
+			UserDTO userDto = iUserService.userInfo(userId);
+			resultMap.put("userInfo", userDto);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
 }
-/*
- * 
- * 
- * GET /api/board : 전체조회 GET /api/board/10 : 10번 게시물 조회 Post /api/board : 게시글 등록
- * Delete /api/board/10 : 10번 게시물 삭제 PUT /api/board/10 : 10번 게시물 수정
- * 
- * 
- */

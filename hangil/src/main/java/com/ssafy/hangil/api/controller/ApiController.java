@@ -23,20 +23,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ApiController {
 
-	private final IPinataService pinataService;
+    private final IPinataService pinataService;
 
-	@PostMapping("/pinata/upload")
-	public ResponseEntity<Map<String, Object>> uploadImage(@RequestParam("imageFile") MultipartFile[] imageFiles) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = HttpStatus.ACCEPTED;
-		try {
-			List<String> cid = pinataService.uploadToPinata(imageFiles);
-			resultMap.put("CID", cid);
-			status = HttpStatus.CREATED;
-		} catch (Exception e) {
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
+    @PostMapping("/pinata/upload")
+    public ResponseEntity<Map<String, Object>> uploadImage(@RequestParam("imageFile") MultipartFile[] imageFiles) {
+    	Map<String, Object> resultMap = new HashMap<String, Object>();
+        HttpStatus status = HttpStatus.ACCEPTED;
+        try {
+            List<String> cid = pinataService.uploadToPinata(imageFiles);
+            resultMap.put("CID", cid);
+            status = HttpStatus.CREATED;
+        } catch (Exception e) {
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
 }

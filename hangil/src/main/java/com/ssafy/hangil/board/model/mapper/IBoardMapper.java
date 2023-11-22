@@ -38,4 +38,8 @@ public interface IBoardMapper {
 	int setBoardStorage(String userId);
 
 	void setBoardStorageContent(int boardStorageNo, int boardNo);
+
+	List<Integer> getBoardStorageContent(Integer boardStorageNo);
+
+	BoardDTO getBoardByBoardNo(Integer boardNo);
 }

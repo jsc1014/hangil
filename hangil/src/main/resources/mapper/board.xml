@@ -89,7 +89,8 @@
 
 	<select id="getBoardStorage" parameterType="string"
 		resultType="java.lang.Integer">
-		SELECT board_storage_no FROM board_storage WHERE user_id = #{userId}
+		SELECT board_storage_no FROM board_storage WHERE user_id =
+		#{userId}
 	</select>
 
 
@@ -106,6 +107,20 @@
 		values(#{boardStorageNo}, #{boardNo})
 	</insert>
 
+	<select id="getBoardStorageContent"
+		parameterType="java.lang.Integer" resultType="int">
+		select board_no
+		from
+		board_storage_content
+		where board_storage_no = #{boardStorageNo}
+	</select>
+
+	<select id="getBoardByBoardNo" parameterType="java.lang.Integer"
+		resultMap="boardMap">
+		select *
+		from board
+		where board_no = #{boardNo}
+	</select>
 	<select id="boardDetail" parameterType="int"
 		resultMap="boardMap">
 		SELECT

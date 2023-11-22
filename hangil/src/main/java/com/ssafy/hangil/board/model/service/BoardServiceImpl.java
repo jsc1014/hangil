@@ -1,5 +1,6 @@
 package com.ssafy.hangil.board.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-//@Transactional
+@Transactional
 public class BoardServiceImpl implements IBoardService {
 
 	private final IBoardMapper boardMapper;
@@ -77,6 +78,19 @@ public class BoardServiceImpl implements IBoardService {
 			boardStorageNo = boardMapper.getBoardStorage(userId);
 		}
 		boardMapper.setBoardStorageContent(boardStorageNo, boardNo);
+	}
+
+	@Override
+	public List<BoardDTO> getBoardStorage(String userId) {
+		Integer boardStorageNo = boardMapper.getBoardStorage(userId);
+		List<BoardDTO> boardList = new ArrayList<>();
+		if (boardStorageNo != null) {
+			List<Integer> boardNoList = boardMapper.getBoardStorageContent(boardStorageNo);
+			for(Integer boardNo : boardNoList) {
+				boardList.add(boardMapper.getBoardByBoardNo(boardNo));
+			}
+		}
+		return boardList;
 	}
 
 	@Override

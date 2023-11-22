@@ -23,5 +23,7 @@ public interface IBoardMapper {
 
 	List<String> getBoardImgById(int boardNo);
 
-	void setBoardFile(int boardNo, String fileCid);
+	void setBoardFile(int boardNo, String boardFileCid);
+
+	void setHashTags(int boardNo, String hashTagContent);
 }

@@ -3,6 +3,7 @@ package com.ssafy.hangil.board.model.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.hangil.board.model.BoardDTO;
 import com.ssafy.hangil.board.model.mapper.IBoardMapper;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BoardServiceImpl implements IBoardService {
 
 	private final IBoardMapper boardMapper;
@@ -18,6 +20,20 @@ public class BoardServiceImpl implements IBoardService {
 	@Override
 	public void boardWrite(BoardDTO boardDTO) {
 		boardMapper.boardWrite(boardDTO);
+		int boardNo = boardMapper.getBoardNo(boardDTO);
+		System.out.println(boardNo);
+		List<String> boardFileCids = boardDTO.getBoardFileCid();
+		for (String boardFileCid : boardFileCids) {
+			System.out.println(boardFileCid);
+			boardMapper.setBoardFile(boardNo, boardFileCid);
+		}
+		
+		List<String> hashTagContents = boardDTO.getHashTagContent();
+		for (String hashTagContent : hashTagContents) {
+			System.out.println(hashTagContent);
+			boardMapper.setHashTags(boardNo, hashTagContent);
+		}
+		
 	}
 
 	@Override
@@ -27,10 +43,19 @@ public class BoardServiceImpl implements IBoardService {
 
 	@Override
 	public void setBoardFile(BoardDTO boardDTO, int boardNo) {
-		List<String> fileCids = boardDTO.getBoardFileCID();
-		for(String fileCid : fileCids) {
-			System.out.println(fileCid);
-			boardMapper.setBoardFile(boardNo, fileCid);
+		List<String> boardFileCids = boardDTO.getBoardFileCid();
+		for (String boardFileCid : boardFileCids) {
+			System.out.println(boardFileCid);
+			boardMapper.setBoardFile(boardNo, boardFileCid);
+		}
+	}
+
+	@Override
+	public void setBoardHashTagContents(BoardDTO boardDTO, int boardNo) {
+		List<String> hashTagContents = boardDTO.getHashTagContent();
+		for (String hashTagContent : hashTagContents) {
+			System.out.println(hashTagContent);
+			boardMapper.setHashTags(boardNo, hashTagContent);
 		}
 	}
 

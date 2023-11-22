@@ -4,7 +4,7 @@ use hangil;
 
 DROP TABLE IF EXISTS `hangil`.`memo` ;
 DROP TABLE IF EXISTS `hangil`.`board_file` ;
-DROP TABLE IF EXISTS `hangil`.`hashtag` ;
+DROP TABLE IF EXISTS `hangil`.`hash_tag` ;
 DROP TABLE IF EXISTS `hangil`.`search_content` ;
 DROP TABLE IF EXISTS `hangil`.`board_storage_content` ;
 DROP TABLE IF EXISTS `hangil`.`board_storage` ;
@@ -66,7 +66,7 @@ CREATE TABLE `hangil`.`memo` (
 CREATE TABLE `hangil`.`board_file` (
   `board_file_no` INT NOT NULL AUTO_INCREMENT,
   `board_no` INT NOT NULL,
-  `board_file_url` VARCHAR(255) NULL,
+  `board_file_cid` VARCHAR(255) NULL,
   PRIMARY KEY (`board_file_no`),
   INDEX `board_file_board_no_to_board_board_no_fk_idx` (`board_no` ASC) VISIBLE,
   CONSTRAINT `board_file_board_no_to_board_board_no_fk`
@@ -76,13 +76,13 @@ CREATE TABLE `hangil`.`board_file` (
     ON UPDATE NO ACTION
 );
 
-CREATE TABLE `hangil`.`hashtag` (
-  `hashtag_no` INT NOT NULL AUTO_INCREMENT,
-  `hashtag_content` VARCHAR(100) NOT NULL,
+CREATE TABLE `hangil`.`hash_tag` (
+  `hash_tag_no` INT NOT NULL AUTO_INCREMENT,
+  `hash_tag_content` VARCHAR(100) NOT NULL,
   `board_no` INT NOT NULL,
-  PRIMARY KEY (`hashtag_no`),
-  INDEX `hashtag_board_no_to_board_board_no_fk_idx` (`board_no` ASC) VISIBLE,
-  CONSTRAINT `hashtag_board_no_to_board_board_no_fk`
+  PRIMARY KEY (`hash_tag_no`),
+  INDEX `hash_tag_board_no_to_board_board_no_fk_idx` (`board_no` ASC) VISIBLE,
+  CONSTRAINT `hash_tag_board_no_to_board_board_no_fk`
     FOREIGN KEY (`board_no`)
     REFERENCES `hangil`.`board` (`board_no`)
     ON DELETE NO ACTION

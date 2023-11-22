@@ -31,8 +31,8 @@ public class BoardDTO {
 
 	private String boardDate;
 
-	private List<String> boardFileCID;
+	private List<String> boardFileCid;
 
-	private List<String> boardTags;
+	private List<String> hashTagContent;
 
 }

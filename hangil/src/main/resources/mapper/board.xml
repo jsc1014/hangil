@@ -50,7 +50,12 @@
 
 	<insert id="setBoardFile" parameterType="hashMap">
 		insert into board_file
-		(board_no, board_file_url) values(#{boardNo}, #{fileCid})
+		(board_no, board_file_cid) values(#{boardNo}, #{boardFileCid})
+	</insert>
+
+	<insert id="setHashTags" parameterType="hashMap">
+		insert into hash_tag
+		(hash_tag_content, board_no) values(#{hashTagContent}, #{boardNo})
 	</insert>
 
 	<select id="getBoardImgById" parameterType="int"

@@ -21,4 +21,6 @@ public interface IBoardService {
 	List<String> getBoardImgById(int boardNo);
 
 	void setBoardFile(BoardDTO boardDTO, int boardNo);
+
+	void setBoardHashTagContents(BoardDTO boardDTO, int boardNo);
 }

@@ -37,11 +37,9 @@ public class BoardController {
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
 			boardService.boardWrite(boardDTO);
-			int boardNo = boardService.getBoardNo(boardDTO);
-			boardService.setBoardFile(boardDTO, boardNo);
 			status = HttpStatus.CREATED;
 		} catch (Exception e) {
-
+			System.out.println(e.getMessage());
 		}
 		return new ResponseEntity<Map<String, Object>>(status);
 	}

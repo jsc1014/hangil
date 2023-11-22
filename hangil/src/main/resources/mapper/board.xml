@@ -87,6 +87,25 @@
 		LIMIT #{limit} OFFSET #{offset}
 	</select>
 
+	<select id="getBoardStorage" parameterType="string"
+		resultType="java.lang.Integer">
+		SELECT board_storage_no FROM board_storage WHERE user_id = #{userId}
+	</select>
+
+
+	<insert id="setBoardStorage" parameterType="string">
+		insert into
+		board_storage
+		(user_id) values(#{userId})
+	</insert>
+
+	<insert id="setBoardStorageContent" parameterType="hashMap">
+		insert into
+		board_storage_content
+		(board_storage_no, board_no)
+		values(#{boardStorageNo}, #{boardNo})
+	</insert>
+
 	<select id="boardDetail" parameterType="int"
 		resultMap="boardMap">
 		SELECT

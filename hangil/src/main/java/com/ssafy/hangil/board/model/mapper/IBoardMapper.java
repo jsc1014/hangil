@@ -32,4 +32,10 @@ public interface IBoardMapper {
 	List<String> getBoardFileCid(int boardNo);
 
 	List<String> getHashTagContent(int boardNo);
+
+	Integer getBoardStorage(String userId);
+
+	int setBoardStorage(String userId);
+
+	void setBoardStorageContent(int boardStorageNo, int boardNo);
 }

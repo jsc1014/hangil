@@ -39,15 +39,15 @@ public class BoardController {
 			boardService.boardWrite(boardDTO);
 			status = HttpStatus.CREATED;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			resultMap.put("message", "아이디 또는 패스워드를 확인해주세요.");
+			status = HttpStatus.UNAUTHORIZED;
 		}
 		return new ResponseEntity<Map<String, Object>>(status);
 	}
 
 	// 게시글 목록
 	@GetMapping("list")
-	public ResponseEntity<Map<String, Object>> boardList(
-			@RequestParam(required = false, defaultValue = "1") int page,
+	public ResponseEntity<Map<String, Object>> boardList(@RequestParam(required = false, defaultValue = "1") int page,
 			@RequestParam(required = false, defaultValue = "5") int limit) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
@@ -56,7 +56,24 @@ public class BoardController {
 			resultMap.put("boardList", boardList);
 			status = HttpStatus.OK;
 		} catch (Exception e) {
+			resultMap.put("message", "아이디 또는 패스워드를 확인해주세요.");
+			status = HttpStatus.UNAUTHORIZED;
+		}
 
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@GetMapping("save")
+	public ResponseEntity<Map<String, Object>> boardSave(@RequestParam String userId, @RequestParam int boardNo) {
+
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			boardService.boardSave(userId, boardNo);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			resultMap.put("message", "이미 저장 되었습니다");
+			status = HttpStatus.UNAUTHORIZED;
 		}
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);

@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+//@Transactional
 public class BoardServiceImpl implements IBoardService {
 
 	private final IBoardMapper boardMapper;
@@ -60,13 +60,23 @@ public class BoardServiceImpl implements IBoardService {
 	public List<BoardDTO> getBoardList(int page, int limit) {
 		int offset = (page - 1) * limit;
 		List<BoardDTO> boardDTOs = boardMapper.getBoardList(limit, offset);
-		for(BoardDTO boardDTO : boardDTOs) {
+		for (BoardDTO boardDTO : boardDTOs) {
 			int boardNo = boardDTO.getBoardNo();
 			boardDTO.setBoardFileCid(boardMapper.getBoardFileCid(boardNo));
 			boardDTO.setHashTagContent(boardMapper.getHashTagContent(boardNo));
 		}
 		return boardDTOs;
 
+	}
+
+	@Override
+	public void boardSave(String userId, int boardNo) {
+		Integer boardStorageNo = boardMapper.getBoardStorage(userId);
+		if (boardStorageNo == null) {
+			boardMapper.setBoardStorage(userId);
+			boardStorageNo = boardMapper.getBoardStorage(userId);
+		}
+		boardMapper.setBoardStorageContent(boardStorageNo, boardNo);
 	}
 
 	@Override

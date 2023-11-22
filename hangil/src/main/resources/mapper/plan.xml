@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ssafy.hangil.planstorage.model.mapper.IPlanStorageMapper">
+	
+	<resultMap type="planStorageDTO" id="planMap">
+		<result column="plan_storage_no" property="planStorageNo" />
+		<result column="user_id" property="userId" />
+		<result column="plan_storage_name" property="planStorageName" />
+	</resultMap>
+
+	<!-- 계획 조회 -->
+	<select id="detailPlan" parameterType="String" resultMap="planMap">
+		SELECT plan_storage_no, user_id, plan_storage_name
+		  FROM plan_storage 
+		 WHERE plan_storage_no = #{planStorageNo}
+	</select>
+ 
+	<!-- 계획 등록 -->
+	<insert id="registPlan" parameterType="planStorageDTO">
+		INSERT INTO plan_storage (user_id, plan_storage_name) 
+		VALUES (#{userId}, #{planStorageNo})
+	</insert> 
+	
+<!-- 
+	<delete id="deleltePlan" parameterType="int">
+		DELETE FROM plan_storage 
+		 WHERE plan_storage_no = #{planStorageNo}
+	</delete>
+
+	<update id="updatePlan" parameterType="planStorageDTO">
+		UPDATE plan_storage 
+		   SET user_id = #{userId} , plan_storage_name = #{planStorageName}
+		 WHERE plan_storage_no = #{planStorageNo}
+	</update>
+
+	<select id="sharePlan" resultType="int">
+	</select>
+	
+	<select id="setBoardNo" parameterType="map">
+		insert into plan_storage_content
+		(board_no, plan_storage_no)
+		values(#{boardNo}, #{storageNo})
+	</select> 
+	-->
+
+</mapper>

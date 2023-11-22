@@ -58,10 +58,10 @@
 		(hash_tag_content, board_no) values(#{hashTagContent}, #{boardNo})
 	</insert>
 
-	<select id="getBoardImgById" parameterType="int"
+	<select id="getBoardFileCid" parameterType="int"
 		resultType="String">
 		SELECT
-		board_file_url
+		board_file_cid
 		FROM
 		board_file
 		WHERE
@@ -69,18 +69,22 @@
 		#{boardNo}
 	</select>
 
-	<select id="boardList" resultMap="boardMap">
+	<select id="getHashTagContent" parameterType="int"
+		resultType="String">
 		SELECT
-		board_no,
-		user_id,
-		board_title,
-		board_content,
-		board_like,
-		board_latitude,
-		board_longitude,
-		board_date
+		hash_tag_content
 		FROM
-		board
+		hash_tag
+		WHERE
+		board_no =
+		#{boardNo}
+	</select>
+
+	<select id="getBoardList" resultMap="boardMap">
+		SELECT * FROM board
+		ORDER BY
+		board_date DESC
+		LIMIT #{limit} OFFSET #{offset}
 	</select>
 
 	<select id="boardDetail" parameterType="int"

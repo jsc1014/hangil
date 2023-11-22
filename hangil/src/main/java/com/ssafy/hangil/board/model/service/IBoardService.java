@@ -23,4 +23,6 @@ public interface IBoardService {
 	void setBoardFile(BoardDTO boardDTO, int boardNo);
 
 	void setBoardHashTagContents(BoardDTO boardDTO, int boardNo);
+
+	List<BoardDTO> getBoardList(int page, int limit);
 }

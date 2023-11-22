@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.hangil.board.model.BoardDTO;
@@ -32,7 +33,6 @@ public class BoardController {
 	// 게시글 작성
 	@PostMapping("write")
 	public ResponseEntity<Map<String, Object>> boardWrite(@RequestBody BoardDTO boardDTO) {
-		System.out.println(boardDTO);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
@@ -45,10 +45,21 @@ public class BoardController {
 	}
 
 	// 게시글 목록
-	@GetMapping
-	public ResponseEntity<?> boardList() {
-		List<BoardDTO> list = boardService.boardList();
-		return ResponseEntity.ok(list);
+	@GetMapping("list")
+	public ResponseEntity<Map<String, Object>> boardList(
+			@RequestParam(required = false, defaultValue = "1") int page,
+			@RequestParam(required = false, defaultValue = "5") int limit) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			List<BoardDTO> boardList = boardService.getBoardList(page, limit);
+			resultMap.put("boardList", boardList);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
 	// 게시글 상세 정보

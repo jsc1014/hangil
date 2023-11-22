@@ -21,19 +21,16 @@ public class BoardServiceImpl implements IBoardService {
 	public void boardWrite(BoardDTO boardDTO) {
 		boardMapper.boardWrite(boardDTO);
 		int boardNo = boardMapper.getBoardNo(boardDTO);
-		System.out.println(boardNo);
 		List<String> boardFileCids = boardDTO.getBoardFileCid();
 		for (String boardFileCid : boardFileCids) {
-			System.out.println(boardFileCid);
 			boardMapper.setBoardFile(boardNo, boardFileCid);
 		}
-		
+
 		List<String> hashTagContents = boardDTO.getHashTagContent();
 		for (String hashTagContent : hashTagContents) {
-			System.out.println(hashTagContent);
 			boardMapper.setHashTags(boardNo, hashTagContent);
 		}
-		
+
 	}
 
 	@Override
@@ -57,6 +54,19 @@ public class BoardServiceImpl implements IBoardService {
 			System.out.println(hashTagContent);
 			boardMapper.setHashTags(boardNo, hashTagContent);
 		}
+	}
+
+	@Override
+	public List<BoardDTO> getBoardList(int page, int limit) {
+		int offset = (page - 1) * limit;
+		List<BoardDTO> boardDTOs = boardMapper.getBoardList(limit, offset);
+		for(BoardDTO boardDTO : boardDTOs) {
+			int boardNo = boardDTO.getBoardNo();
+			boardDTO.setBoardFileCid(boardMapper.getBoardFileCid(boardNo));
+			boardDTO.setHashTagContent(boardMapper.getHashTagContent(boardNo));
+		}
+		return boardDTOs;
+
 	}
 
 	@Override

@@ -26,4 +26,10 @@ public interface IBoardMapper {
 	void setBoardFile(int boardNo, String boardFileCid);
 
 	void setHashTags(int boardNo, String hashTagContent);
+
+	List<BoardDTO> getBoardList(int limit, int offset);
+
+	List<String> getBoardFileCid(int boardNo);
+
+	List<String> getHashTagContent(int boardNo);
 }

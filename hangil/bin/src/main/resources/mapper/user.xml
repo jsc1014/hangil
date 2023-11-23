@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ssafy.hangil.user.model.mapper.IUserMapper">
+
+	<resultMap type="userDTO" id="userMap">
+		<result column="user_id" property="userId" />
+		<result column="user_pw" property="userPw" />
+		<result column="user_name" property="userName" />
+		<result column="user_nickname" property="userNickname" />
+		<result column="profile_picture" property="profilePicture" />
+		<result column="user_token" property="userToken" />
+	</resultMap>
+
+	<select id="loginUser" parameterType="userDTO"
+		resultMap="userMap">
+		select user_id, user_pw, user_token
+		from user
+		where user_id =
+		#{userId} and user_pw = #{userPw}
+	</select>
+
+	<select id="userInfo" parameterType="string" resultMap="userMap">
+		select
+		user_name, user_id, user_nickname, profile_picture
+		from user
+		where
+		user_id = #{userId}
+	</select>
+
+	<update id="saveRefreshToken" parameterType="map">
+		update user
+		set
+		user_token
+		= #{userToken}
+		where user_id = #{userId}
+	</update>
+
+	<select id="getRefreshToken" parameterType="string"
+		resultType="string">
+		select user_token
+		from user
+		where user_id = #{userId}
+	</select>
+
+	<update id="deleteRefreshToken" parameterType="map">
+		update user
+		set
+		user_token = #{userToken, jdbcType=VARCHAR}
+		where user_id = #{userId}
+	</update>
+
+	<insert id="registUser" parameterType="userDTO">
+		insert into
+		user(
+		user_id,
+		user_pw, user_name, user_nickname
+		) values (
+		#{userId}, #{userPw},
+		#{userName}, #{userNickname}
+		)
+	</insert>
+
+	<delete id="delelteUser" parameterType="string">
+		delete from user
+		where
+		user_id = #{userId}
+	</delete>
+
+	<update id="updateUser" parameterType="userDTO">
+		update user
+		set user_pw = #{userPw},
+		user_nickname = #{userNickname}
+		where user_id = #{userId}
+	</update>
+</mapper>

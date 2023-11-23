@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ssafy.hangil.board.model.mapper.IBoardMapper">
+
+	<resultMap type="boardDTO" id="boardMap">
+		<result column="board_no" property="boardNo" />
+		<result column="user_id" property="userId" />
+		<result column="board_title" property="boardTitle" />
+		<result column="board_content" property="boardContent" />
+		<result column="board_like" property="boardLike" />
+		<result column="board_place" property="boardPlace" />
+		<result column="board_latitude" property="boardLatitude" />
+		<result column="board_longitude" property="boardLongitude" />
+		<result column="board_date" property="boardDate" />
+	</resultMap>
+
+	<insert id="boardWrite" parameterType="boardDTO">
+		INSERT into board (
+		user_id,
+		board_title,
+		board_content,
+		board_place,
+		board_latitude,
+		board_longitude
+		)
+		VALUES (
+		#{userId},
+		#{boardTitle},
+		#{boardContent},
+		#{boardPlace},
+		#{boardLatitude},
+		#{boardLongitude}
+		)
+	</insert>
+
+	<select id="getBoardNo" parameterType="boardDTO"
+		resultType="int">
+		select board_no
+		from board
+		where user_id = #{userId} and
+		board_title = #{boardTitle} and board_content =
+		#{boardContent} and
+		board_place = #{boardPlace} and board_latitude = #{boardLatitude}
+		and
+		board_longitude = #{boardLongitude}
+	</select>
+
+	<insert id="setBoardFile" parameterType="hashMap">
+		insert into board_file
+		(board_no, board_file_cid) values(#{boardNo}, #{boardFileCid})
+	</insert>
+
+	<insert id="setHashTags" parameterType="hashMap">
+		insert into hash_tag
+		(hash_tag_content, board_no) values(#{hashTagContent}, #{boardNo})
+	</insert>
+
+	<select id="getBoardFileCid" parameterType="int"
+		resultType="String">
+		SELECT
+		board_file_cid
+		FROM
+		board_file
+		WHERE
+		board_no =
+		#{boardNo}
+	</select>
+
+	<select id="getHashTagContent" parameterType="int"
+		resultType="String">
+		SELECT
+		hash_tag_content
+		FROM
+		hash_tag
+		WHERE
+		board_no =
+		#{boardNo}
+	</select>
+
+	<select id="getBoardList" resultMap="boardMap">
+		SELECT * FROM board
+		ORDER BY
+		board_date DESC
+		LIMIT #{limit} OFFSET #{offset}
+	</select>
+
+	<select id="boardDetail" parameterType="int"
+		resultMap="boardMap">
+		SELECT
+		board_no,
+		user_id,
+		board_title,
+		board_content,
+		board_like,
+		board_latitude,
+		board_longitude,
+		board_date
+		FROM
+		board
+		WHERE
+		board_no = #{boardNo}
+	</select>
+
+	<delete id="boardDelete" parameterType="int">
+		DELETE FROM board
+		WHERE
+		board_no = #{boardNo}
+	</delete>
+
+	<select id="userBoardList" resultMap="boardMap">
+		SELECT
+		board_no,
+		user_id,
+		board_title,
+		board_content,
+		board_like,
+		board_latitude,
+		board_longitude,
+		board_date
+		FROM
+		board
+		WHERE
+		user_id = #{userId}
+	</select>
+</mapper>

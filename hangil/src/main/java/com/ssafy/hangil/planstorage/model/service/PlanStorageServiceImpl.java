@@ -19,7 +19,9 @@ public class PlanStorageServiceImpl implements IPlanStorageService {
 	}
 
 	@Override
-	public PlanStorageDTO detailPlan(String planStorageNo) {
+	public PlanStorageDTO detailPlan(int planStorageNo) {
+		PlanStorageDTO dto = storageMapper.detailPlan(planStorageNo);
+		System.out.println("조회" + dto);
 		return storageMapper.detailPlan(planStorageNo);
 	}
 
@@ -29,6 +31,7 @@ public class PlanStorageServiceImpl implements IPlanStorageService {
 		System.out.println(planstorageDTO.getPlanStorageName());
 		storageMapper.registPlan(planstorageDTO);
 		List<Integer> boardNos = planstorageDTO.getPlanStorageContents();
+		System.out.println("보드 번호 " + boardNos);
 		for (int boardNo : boardNos) {
 			storageMapper.setBoardNo(boardNo, planstorageDTO.getPlanStorageNo());
 		}
@@ -36,9 +39,11 @@ public class PlanStorageServiceImpl implements IPlanStorageService {
 
 	@Override
 	public void updatePlan(PlanStorageDTO planstorageDTO) {
+		System.out.println("서비스 " + planstorageDTO.getPlanStorageName());
+		storageMapper.updatePlanStorageName(planstorageDTO.getPlanStorageNo(),planstorageDTO.getPlanStorageName());
 		List<Integer> boardNos = planstorageDTO.getPlanStorageContents();
 		for (int boardNo : boardNos) {
-			storageMapper.updatePlan(planstorageDTO.getPlanStorageName(), boardNo);
+			storageMapper.updatePlan(planstorageDTO, boardNo);
 		}
 	}
 

@@ -10,13 +10,13 @@ import com.ssafy.hangil.planstorage.model.PlanStorageDTO;
 @Mapper
 public interface IPlanStorageMapper {
 	
-	PlanStorageDTO detailPlan(String planStorageNo);
+	PlanStorageDTO detailPlan(int planStorageNo);
 	
 	void registPlan(PlanStorageDTO planstorageDTO);
 	
 	void deleltePlan(int planStorageNo);
 	
-	void updatePlan(String planStorageName, int boardNo);
+	void updatePlan(PlanStorageDTO planstorageDTO, int boardNo);
 	
 	int sharePlan(int planStorageNo);
 
@@ -25,5 +25,7 @@ public interface IPlanStorageMapper {
 	List<PlanStorageDTO> getPlanStorageList();
 
 	List<Integer> getPlanList(int planStorageNo);
+
+	void updatePlanStorageName(int planStorageNo, String planStorageName);
 	
 }

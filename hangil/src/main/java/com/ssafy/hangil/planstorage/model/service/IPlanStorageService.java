@@ -5,7 +5,7 @@ import java.util.List;
 import com.ssafy.hangil.planstorage.model.PlanStorageDTO;
 
 public interface IPlanStorageService {
-	PlanStorageDTO detailPlan(String planStorageNo);
+	PlanStorageDTO detailPlan(int planStorageNo);
 	
 	void registPlan(PlanStorageDTO planstorageDTO);
 	

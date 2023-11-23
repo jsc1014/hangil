@@ -8,18 +8,9 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.ssafy.hangil.interceptor.JWTInterceptor;
-
 @Configuration
 @EnableWebMvc
 public class WebConfiguration implements WebMvcConfigurer {
-
-	private JWTInterceptor jwtInterceptor;
-
-	public WebConfiguration(JWTInterceptor jwtInterceptor) {
-		super();
-		this.jwtInterceptor = jwtInterceptor;
-	}
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
@@ -38,13 +29,6 @@ public class WebConfiguration implements WebMvcConfigurer {
 //			.exposedHeaders("*")
 				.maxAge(1800); // Pre-flight Caching
 	}
-
-//	@Override
-//	public void addInterceptors(InterceptorRegistry registry) {
-//		registry.addInterceptor(jwtInterceptor)
-//				.addPathPatterns("/api/**") // API 경로에만 적용
-//				.excludePathPatterns("/api/user/**"); // 로그인, 회원가입 등 제외;
-//	}
 
 //	Swagger UI 실행시 404처리
 //	Swagger2 일경우

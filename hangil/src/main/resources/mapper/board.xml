@@ -152,6 +152,25 @@
 		board_no = #{boardNo}
 	</delete>
 
+	<select id="getSearchBoard" parameterType="string"
+		resultType="java.lang.Integer">
+		SELECT
+		board_no
+		FROM
+		hash_tag
+		WHERE
+		hash_tag_content LIKE
+		#{word}
+	</select>
+
+	<delete id="boardStorageContentDelete" parameterType="hashMap">
+		DELETE FROM
+		board_storage_content
+		WHERE
+		board_storage_no = #{boardStorageNo} and
+		board_no = #{boardNo}
+	</delete>
+	
 	<select id="userBoardList" resultMap="boardMap">
 		SELECT
 		board_no,

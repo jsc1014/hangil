@@ -44,4 +44,8 @@ public interface IBoardMapper {
 	BoardDTO getBoardByBoardNo(Integer boardNo);
 
 	List<BoardDTO> getMyBoardList(String userId);
+
+	List<Integer> getSearchBoard(String word);
+
+	void boardStorageContentDelete(Integer boardStorageNo, int boardNo);
 }

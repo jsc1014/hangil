@@ -1,67 +1,41 @@
 package com.ssafy.hangil.handler;
 
-import org.springframework.web.socket.WebSocketHandler;
-import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.TextMessage;
+import java.io.IOException;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import com.google.gson.Gson;
+import com.ssafy.hangil.chat.model.ChatMessage;
 
 @Component
 public class ChatWebSocketHandler extends TextWebSocketHandler {
-    private final Map<String, WebSocketSession> userSessions = new ConcurrentHashMap<>();
-    private final Map<String, String> chatRooms = new ConcurrentHashMap<>();
+
+    private final Set<WebSocketSession> sessions = ConcurrentHashMap.newKeySet();
+    private final Gson gson = new Gson(); // Gson 인스턴스를 사용합니다.
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
-        // 연결이 성공적으로 맺어진 후, 사용자의 userId를 세션과 연결
-        String userId = getUserName(session);
-        userSessions.put(userId, session);
+        sessions.add(session);
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        JsonObject jsonMessage = JsonParser.parseString(message.getPayload()).getAsJsonObject();
-        String type = jsonMessage.get("type").getAsString();
-
-        if ("join".equals(type)) {
-            String userId = getUserName(session);
-            String targetUserId = jsonMessage.get("targetUserId").getAsString();
-
-            // 채팅방 식별자 생성 (예: "userId1:userId2")
-            String roomId = createRoomId(userId, targetUserId);
-
-            // 채팅방에 사용자 추가
-            chatRooms.put(userId, roomId);
-        } else if ("message".equals(type)) {
-            String userId = getUserName(session);
-            String roomId = chatRooms.get(userId);
-            sendMessageToRoom(roomId, message);
-        }
-    }
-
-    private String createRoomId(String userId1, String userId2) {
-        return userId1.compareTo(userId2) < 0 ? userId1 + ":" + userId2 : userId2 + ":" + userId1;
-    }
-
-    private void sendMessageToRoom(String roomId, TextMessage message) throws IOException {
-        String[] userIds = roomId.split(":");
-        for (String userId : userIds) {
-            WebSocketSession session = userSessions.get(userId);
-            if (session != null && session.isOpen()) {
-                session.sendMessage(message);
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
+        // 클라이언트가 보낸 메시지에서 userId를 포함하여 파싱합니다.
+        ChatMessage chatMessage = gson.fromJson(message.getPayload(), ChatMessage.class);
+        System.out.println(chatMessage);
+        
+        // 모든 세션에 메시지 전송
+        for (WebSocketSession webSocketSession : sessions) {
+            if (webSocketSession.isOpen()) {
+                webSocketSession.sendMessage(new TextMessage(gson.toJson(chatMessage)));
             }
         }
     }
-
-    private String getUserName(WebSocketSession session) {
-		return null;
-        // 사용자 식별을 위한 로직 구현
-        // 예를 들어, WebSocket 연결 URL의 쿼리 파라미터에서 userId 추출
-    }
 }
 
+    

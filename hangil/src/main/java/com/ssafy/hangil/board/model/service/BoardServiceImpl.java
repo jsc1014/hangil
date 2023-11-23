@@ -86,7 +86,7 @@ public class BoardServiceImpl implements IBoardService {
 		List<BoardDTO> boardList = new ArrayList<>();
 		if (boardStorageNo != null) {
 			List<Integer> boardNoList = boardMapper.getBoardStorageContent(boardStorageNo);
-			for(Integer boardNo : boardNoList) {
+			for (Integer boardNo : boardNoList) {
 				boardList.add(boardMapper.getBoardByBoardNo(boardNo));
 			}
 			for (BoardDTO boardDTO : boardList) {
@@ -108,7 +108,32 @@ public class BoardServiceImpl implements IBoardService {
 		}
 		return boardDTOs;
 	}
-	
+
+	@Override
+	public List<BoardDTO> getSearchBoard(String searchWord) {
+		String word = "%" + searchWord + "%";
+		System.out.println(word);
+		List<BoardDTO> boardList = new ArrayList<>();
+		List<Integer> boardNoList = boardMapper.getSearchBoard(word);
+		if (boardNoList != null) {
+			for (Integer boardNo : boardNoList) {
+				boardList.add(boardMapper.getBoardByBoardNo(boardNo));
+			}
+			for (BoardDTO boardDTO : boardList) {
+				int boardNo = boardDTO.getBoardNo();
+				boardDTO.setBoardFileCid(boardMapper.getBoardFileCid(boardNo));
+				boardDTO.setHashTagContent(boardMapper.getHashTagContent(boardNo));
+			}
+		}
+		return boardList;
+	}
+
+	@Override
+	public void boardStorageContentDelete(String userId, int boardNo) {
+		Integer boardStorageNo = boardMapper.getBoardStorage(userId);
+		boardMapper.boardStorageContentDelete(boardStorageNo, boardNo);
+	}
+
 	@Override
 	public List<BoardDTO> boardList() {
 		return boardMapper.boardList();

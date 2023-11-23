@@ -65,7 +65,7 @@ public class BoardController {
 
 	@GetMapping("save")
 	public ResponseEntity<Map<String, Object>> boardSave(@RequestParam String userId, @RequestParam int boardNo) {
-		
+
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
@@ -95,7 +95,7 @@ public class BoardController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@GetMapping("getMyBoard")
 	public ResponseEntity<Map<String, Object>> getMyBoard(@RequestParam String userId) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -112,12 +112,44 @@ public class BoardController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+
 	// 게시글 삭제
 	@DeleteMapping("/delete/{boardNo}")
 	public ResponseEntity<?> boardDelete(@PathVariable int boardNo) {
 		System.out.println(boardNo);
 		boardService.boardDelete(boardNo);
 		return ResponseEntity.ok("OK");
+	}
+
+	@GetMapping("search")
+	public ResponseEntity<Map<String, Object>> searchBoard(@RequestParam String searchWord) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			List<BoardDTO> boardList = boardService.getSearchBoard(searchWord);
+			resultMap.put("boardList", boardList);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.UNAUTHORIZED;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	@DeleteMapping("boardStorageContentDelete")
+	public ResponseEntity<Map<String, Object>> boardStorageContentDelete(
+			@RequestParam String userId,
+			@RequestParam int boardNo) {
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			boardService.boardStorageContentDelete(userId, boardNo);
+			status=HttpStatus.OK;
+		}catch (Exception e) {
+			status = HttpStatus.UNAUTHORIZED;
+		}
+		return new ResponseEntity<Map<String, Object>>( status);
 	}
 
 	// 사용자가 등록한 게시글 불러오기

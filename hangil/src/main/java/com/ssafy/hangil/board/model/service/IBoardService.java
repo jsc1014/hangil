@@ -31,4 +31,8 @@ public interface IBoardService {
 	List<BoardDTO> getBoardStorage(String userId);
 
 	List<BoardDTO> getMyBoardList(String userId);
+
+	List<BoardDTO> getSearchBoard(String searchWord);
+
+	void boardStorageContentDelete(String userId, int boardNo);
 }

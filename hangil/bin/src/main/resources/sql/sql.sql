@@ -38,8 +38,8 @@ CREATE TABLE `hangil`.`board` (
   CONSTRAINT `board_user_id_to_user_user_id_fk`
     FOREIGN KEY (`user_id`)
     REFERENCES `hangil`.`user` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE `hangil`.`memo` (
@@ -54,13 +54,13 @@ CREATE TABLE `hangil`.`memo` (
   CONSTRAINT `board_no`
     FOREIGN KEY (`board_no`)
     REFERENCES `hangil`.`board` (`board_no`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `user_id`
     FOREIGN KEY (`user_id`)
     REFERENCES `hangil`.`user` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE `hangil`.`board_file` (
@@ -72,8 +72,8 @@ CREATE TABLE `hangil`.`board_file` (
   CONSTRAINT `board_file_board_no_to_board_board_no_fk`
     FOREIGN KEY (`board_no`)
     REFERENCES `hangil`.`board` (`board_no`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE `hangil`.`hash_tag` (
@@ -85,8 +85,8 @@ CREATE TABLE `hangil`.`hash_tag` (
   CONSTRAINT `hash_tag_board_no_to_board_board_no_fk`
     FOREIGN KEY (`board_no`)
     REFERENCES `hangil`.`board` (`board_no`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE `hangil`.`search_content` (
@@ -98,15 +98,14 @@ CREATE TABLE `hangil`.`search_content` (
 CREATE TABLE `hangil`.`board_storage` (
   `board_storage_no` INT NOT NULL AUTO_INCREMENT,
   `user_id` VARCHAR(45) NOT NULL,
-  `board_storage_name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`board_storage_no`),
   INDEX `user_id_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `board_storage_user_id_to_user_user_id_fk`
     FOREIGN KEY (`user_id`)
     REFERENCES `hangil`.`user` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-;
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
 
 CREATE TABLE `hangil`.`plan_storage` (
   `plan_storage_no` int NOT NULL AUTO_INCREMENT,
@@ -117,6 +116,8 @@ CREATE TABLE `hangil`.`plan_storage` (
   CONSTRAINT `plan_storage_user_id_to_user_user_id_fk` 
     FOREIGN KEY (`user_id`) 
     REFERENCES `user` (`user_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 ) ;
 
 CREATE TABLE `hangil`.`board_storage_content` (
@@ -129,24 +130,28 @@ CREATE TABLE `hangil`.`board_storage_content` (
   CONSTRAINT `storage_content_board_storage_no_to_storage_board_storage_no_fk`
     FOREIGN KEY (`board_storage_no`)
     REFERENCES `hangil`.`board_storage` (`board_storage_no`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `board_storage_content_board_no_to_board_board_no_fk`
     FOREIGN KEY (`board_no`)
     REFERENCES `hangil`.`board` (`board_no`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE `plan_storage_content` (
-  `plan_storage_content_no` int NOT NULL AUTO_INCREMENT,
-  `plan_storage_no` int NOT NULL,
-  `board_no` int NOT NULL,
-  PRIMARY KEY (`plan_storage_content_no`),
-  KEY `plan_storage_content_plan_storage_no_to_plan_storage_plan_s_idx` (`plan_storage_no`),
-  KEY `board_board_no_to_plan_storage_content_board_no_idx` (`board_no`),
-  CONSTRAINT `board_board_no_to_plan_storage_content_board_no` FOREIGN KEY (`board_no`) REFERENCES `board` (`board_no`),
-  CONSTRAINT `plan_content_plan_storage_no_to_plan_storage_plan_storage_no_fk` FOREIGN KEY (`plan_storage_no`) REFERENCES `plan_storage` (`plan_storage_no`)
+    `plan_storage_content_no` INT NOT NULL AUTO_INCREMENT,
+    `plan_storage_no` INT NOT NULL,
+    `board_no` INT NOT NULL,
+    PRIMARY KEY (`plan_storage_content_no`),
+    KEY `plan_storage_content_plan_storage_no_to_plan_storage_plan_s_idx` (`plan_storage_no`),
+    KEY `board_board_no_to_plan_storage_content_board_no_idx` (`board_no`),
+    CONSTRAINT `board_board_no_to_plan_storage_content_board_no` FOREIGN KEY (`board_no`)
+        REFERENCES `board` (`board_no`)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `plan_content_plan_storage_no_to_plan_storage_plan_storage_no_fk` FOREIGN KEY (`plan_storage_no`)
+        REFERENCES `plan_storage` (`plan_storage_no`)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 insert into user(user_id, user_pw, user_name, user_nickname)

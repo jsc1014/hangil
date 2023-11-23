@@ -12,9 +12,9 @@
 	</resultMap>
 
 	<!-- 계획 조회 -->
-	<select id="detailPlan" parameterType="int" resultMap="planStorageMap">
-		SELECT bord_no
-		  FROM plan_storage_content 
+	<select id="detailPlan" parameterType="String" resultMap="planStorageMap">
+		SELECT plan_storage_no, user_id, plan_storage_name
+		  FROM plan_storage 
 		 WHERE plan_storage_no = #{planStorageNo}
 	</select>
  
@@ -25,16 +25,14 @@
 	</insert> 
 	
 	<insert id="setBoardNo" parameterType="map">
-		insert into plan_storage_content
-		(board_no, plan_storage_no)
-		values(#{boardNo}, #{planStorageNo})
+		INSERT INTO plan_storage_content (board_no, plan_storage_no)
+		VALUES(#{boardNo}, #{planStorageNo})
 	</insert> 
 	
-	<update id="updatePlan" parameterType="map">
+	<update id="updatePlan" parameterType="java.util.Map">
 		UPDATE plan_storage_content 
-		   SET plan_storage_name = #{planStorageName},
-		       board_no = #{boardNo}
-		 WHERE plan_storage_no = #{planStorageNo}
+		   SET plan_storage_name = #{planStorageDTO.planStorageName}
+		 WHERE plan_storage_no = #{planStorageDTO.planStorageNo}
 	</update>
 
 	<update id="updatePlanStorageName" parameterType="map">
@@ -49,19 +47,19 @@
 	</select>
 
 	<select id="getPlanList" parameterType="int" resultType="int">
-		SELECT board_no
+		SELECT board_no 
 		  FROM plan_storage_content
-		 WHERE plan_storage_no = #{planStorageNo}
+	 	 WHERE plan_storage_no = #{planStorageNo}
 	</select>
 	
-	<delete id="deleltePlan" parameterType="int">
+	<delete id="deletePlanStorage" parameterType="int">
 		DELETE FROM plan_storage 
 		 WHERE plan_storage_no = #{planStorageNo}
 	</delete>
 
-	<select id="sharePlan" resultType="int">
-	</select>
+	<delete id="deleteAllPlan" parameterType="int">
+		DELETE FROM plan_storage_content 
+		 WHERE plan_storage_no = #{planStorageNo}
+	</delete>
 	
-	
-
 </mapper>

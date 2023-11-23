@@ -1,5 +1,6 @@
 package com.ssafy.hangil.planstorage.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,34 +31,37 @@ import lombok.RequiredArgsConstructor;
 public class PlanStorageController {
 
 	private final IPlanStorageService planStorageService;
-	
-	// 계획 목록
+
+	// 총 계획 목록
 	@GetMapping("list")
 	public ResponseEntity<Map<String, Object>> planList() {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		try {
-			List<PlanStorageDTO> planStorageList = planStorageService.getPlanStorageList();
-			resultMap.put("planStorageList", planStorageList);
-			System.out.println("contoller 리스트 불러오기 " + planStorageList);
-			status = HttpStatus.OK;
-		} catch (Exception e) {
-
-		}
+		List<PlanStorageDTO> planStorageList = planStorageService.getPlanStorageList();
+		resultMap.put("planStorageList", planStorageList);
+		status = HttpStatus.OK;
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-    @GetMapping("{planStorageNo}")
-    public ResponseEntity<PlanStorageDTO> getPlan(@PathVariable int planStorageNo) {
-        PlanStorageDTO storageDTO = planStorageService.detailPlan(planStorageNo);
-		System.out.println("카드 선택 " + storageDTO);
+	// 계획 저장소 얻기
+	@GetMapping("{planStorageNo}")
+	public ResponseEntity<PlanStorageDTO> getPlan(@PathVariable String planStorageNo) {
+		PlanStorageDTO storageDTO = planStorageService.detailPlan(planStorageNo);
 		return ResponseEntity.ok(storageDTO);
+	}
+
+	// 계획 저장소에 저장된 계획 리스트 얻기
+	@GetMapping("list/{planStorageNo}")
+	public ResponseEntity<List<BoardDTO>> getSavedPlanLists(@PathVariable int planStorageNo) {
+		List<BoardDTO> planList = new ArrayList<BoardDTO>();
+		// 해당 저장소 번호
+		planList = planStorageService.getPlanLists(planStorageNo);
+		return ResponseEntity.ok(planList);
 	}
 
 	@PostMapping()
 	public ResponseEntity<Void> addPlan(@RequestBody PlanStorageDTO planstorageDTO) {
-		System.out.println(" 카드 저장 " + planstorageDTO);
 		planStorageService.registPlan(planstorageDTO);
 		return ResponseEntity.ok().build();
 	}
@@ -65,20 +69,13 @@ public class PlanStorageController {
 	@PutMapping()
 	public ResponseEntity<Void> updatePlan(@RequestBody PlanStorageDTO planstorageDTO) {
 		planStorageService.updatePlan(planstorageDTO);
-		System.out.println(" 카드 업데이트 " + planstorageDTO);
 		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping("{planStorageNo}")
 	public ResponseEntity<Void> deletePlan(@PathVariable int planStorageNo) {
-		System.out.println("카드 삭제 번호 : " + planStorageNo);
-		planStorageService.deleltePlan(planStorageNo);
+		planStorageService.deleteAllPlans(planStorageNo);
 		return ResponseEntity.ok().build();
 	}
 
-	@PostMapping("/share/{planStorageNo}")
-	public ResponseEntity<Integer> sharePlan(@PathVariable int planStorageNo) {
-		int shareId = planStorageService.sharePlan(planStorageNo);
-		return ResponseEntity.ok(shareId);
-	}
 }

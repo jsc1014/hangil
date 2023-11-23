@@ -87,6 +87,48 @@
 		LIMIT #{limit} OFFSET #{offset}
 	</select>
 
+	<select id="getBoardStorage" parameterType="string"
+		resultType="java.lang.Integer">
+		SELECT board_storage_no FROM board_storage WHERE user_id =
+		#{userId}
+	</select>
+
+
+	<insert id="setBoardStorage" parameterType="string">
+		insert into
+		board_storage
+		(user_id) values(#{userId})
+	</insert>
+
+	<insert id="setBoardStorageContent" parameterType="hashMap">
+		insert into
+		board_storage_content
+		(board_storage_no, board_no)
+		values(#{boardStorageNo}, #{boardNo})
+	</insert>
+
+	<select id="getBoardStorageContent"
+		parameterType="java.lang.Integer" resultType="int">
+		select board_no
+		from
+		board_storage_content
+		where board_storage_no = #{boardStorageNo}
+	</select>
+
+	<select id="getBoardByBoardNo" parameterType="java.lang.Integer"
+		resultMap="boardMap">
+		select *
+		from board
+		where board_no = #{boardNo}
+	</select>
+
+	<select id="getMyBoardList" parameterType="string"
+		resultMap="boardMap">
+		select *
+		from board
+		where user_id = #{userId}
+	</select>
+
 	<select id="boardDetail" parameterType="int"
 		resultMap="boardMap">
 		SELECT
@@ -110,6 +152,25 @@
 		board_no = #{boardNo}
 	</delete>
 
+	<select id="getSearchBoard" parameterType="string"
+		resultType="java.lang.Integer">
+		SELECT
+		board_no
+		FROM
+		hash_tag
+		WHERE
+		hash_tag_content LIKE
+		#{word}
+	</select>
+
+	<delete id="boardStorageContentDelete" parameterType="hashMap">
+		DELETE FROM
+		board_storage_content
+		WHERE
+		board_storage_no = #{boardStorageNo} and
+		board_no = #{boardNo}
+	</delete>
+	
 	<select id="userBoardList" resultMap="boardMap">
 		SELECT
 		board_no,

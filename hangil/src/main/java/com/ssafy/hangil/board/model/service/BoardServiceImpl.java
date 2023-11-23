@@ -89,10 +89,26 @@ public class BoardServiceImpl implements IBoardService {
 			for(Integer boardNo : boardNoList) {
 				boardList.add(boardMapper.getBoardByBoardNo(boardNo));
 			}
+			for (BoardDTO boardDTO : boardList) {
+				int boardNo = boardDTO.getBoardNo();
+				boardDTO.setBoardFileCid(boardMapper.getBoardFileCid(boardNo));
+				boardDTO.setHashTagContent(boardMapper.getHashTagContent(boardNo));
+			}
 		}
 		return boardList;
 	}
 
+	@Override
+	public List<BoardDTO> getMyBoardList(String userId) {
+		List<BoardDTO> boardDTOs = boardMapper.getMyBoardList(userId);
+		for (BoardDTO boardDTO : boardDTOs) {
+			int boardNo = boardDTO.getBoardNo();
+			boardDTO.setBoardFileCid(boardMapper.getBoardFileCid(boardNo));
+			boardDTO.setHashTagContent(boardMapper.getHashTagContent(boardNo));
+		}
+		return boardDTOs;
+	}
+	
 	@Override
 	public List<BoardDTO> boardList() {
 		return boardMapper.boardList();

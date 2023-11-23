@@ -121,6 +121,14 @@
 		from board
 		where board_no = #{boardNo}
 	</select>
+
+	<select id="getMyBoardList" parameterType="string"
+		resultMap="boardMap">
+		select *
+		from board
+		where user_id = #{userId}
+	</select>
+
 	<select id="boardDetail" parameterType="int"
 		resultMap="boardMap">
 		SELECT

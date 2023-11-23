@@ -65,7 +65,7 @@ public class BoardController {
 
 	@GetMapping("save")
 	public ResponseEntity<Map<String, Object>> boardSave(@RequestParam String userId, @RequestParam int boardNo) {
-
+		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
@@ -81,7 +81,6 @@ public class BoardController {
 
 	@GetMapping("getBoardStorage")
 	public ResponseEntity<Map<String, Object>> getBoardStorage(@RequestParam String userId) {
-		System.out.println(userId);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
@@ -96,10 +95,27 @@ public class BoardController {
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	@GetMapping("getMyBoard")
+	public ResponseEntity<Map<String, Object>> getMyBoard(@RequestParam String userId) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			List<BoardDTO> boardList = boardService.getMyBoardList(userId);
+			resultMap.put("boardList", boardList);
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			resultMap.put("message", "이미 저장 되었습니다");
+			status = HttpStatus.UNAUTHORIZED;
+		}
 
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 	// 게시글 삭제
-	@DeleteMapping("{boardNo}")
+	@DeleteMapping("/delete/{boardNo}")
 	public ResponseEntity<?> boardDelete(@PathVariable int boardNo) {
+		System.out.println(boardNo);
 		boardService.boardDelete(boardNo);
 		return ResponseEntity.ok("OK");
 	}

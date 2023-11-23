@@ -29,4 +29,6 @@ public interface IBoardService {
 	void boardSave(String userId, int boardNo);
 
 	List<BoardDTO> getBoardStorage(String userId);
+
+	List<BoardDTO> getMyBoardList(String userId);
 }

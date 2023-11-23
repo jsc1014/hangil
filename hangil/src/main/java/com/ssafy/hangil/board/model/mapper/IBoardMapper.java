@@ -42,4 +42,6 @@ public interface IBoardMapper {
 	List<Integer> getBoardStorageContent(Integer boardStorageNo);
 
 	BoardDTO getBoardByBoardNo(Integer boardNo);
+
+	List<BoardDTO> getMyBoardList(String userId);
 }
